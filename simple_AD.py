@@ -8,16 +8,14 @@ import pickle
 
 joined_features = pd.read_csv("./dataset/joined_features.txt")
 
-joined_features = joined_features.drop(columns={"FROMACCTID", "TOACCTID", "timestamp_normed"})
-
-
 print(joined_features.head())
 
 model = IsolationForest(n_estimators=200, 
                         max_samples=len(joined_features),
                         random_state=42,
                         n_jobs=-1,
-                        verbose=2)
+                        verbose=2,
+                        contamination=0.05)
 
 predictions = model.fit_predict(joined_features)
 predictions_str = ['Y' if i == -1 else 'N' for i in predictions] 
